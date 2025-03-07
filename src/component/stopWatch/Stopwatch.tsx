@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Time } from "../../types/stopWatchTypes/stopWatch.tyes";
+import { Time } from "../../types/stopWatchTypes/stopWatch.types"; // Ensure the path is correct
 
 function Stopwatch() {
   const [time, setTime] = useState<Time>({
@@ -8,11 +8,11 @@ function Stopwatch() {
     seconds: 0,
   });
   const [isRunning, setIsRunning] = useState<boolean>(false);
-  const timerRef = useRef<number | null>(null);// Correct type for interval ID
+  const timerRef = useRef<number | null>(null); // Use `number` for browser environment
 
   useEffect(() => {
     if (isRunning) {
-      timerRef.current = setInterval(() => {
+      timerRef.current = window.setInterval(() => {
         setTime((prevTime: Time) => {
           const { hour, minutes, seconds } = prevTime;
 
@@ -43,13 +43,13 @@ function Stopwatch() {
   };
 
   const stop = () => {
-    setIsRunning(false);
-    setTime({ hour: 0, minutes: 0, seconds: 0 }); // Reset time
+    setIsRunning(false); // Stop the timer but do not reset time
+    // Time will stay as is when the stop button is pressed
   };
 
   const reset = () => {
-    setIsRunning(false);
-    setTime({ hour: 0, minutes: 0, seconds: 0 });
+    setIsRunning(false); // Stop the timer first
+    setTime({ hour: 0, minutes: 0, seconds: 0 }); // Reset time
     if (timerRef.current) {
       clearInterval(timerRef.current);
       timerRef.current = null;
