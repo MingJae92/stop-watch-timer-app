@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Time } from "../../types/stopWatchTypes/stopWatch.tyes";
+import { Time } from "../../types/stopWatchTypes/stopWatch.types";
 
 function Stopwatch() {
   const [time, setTime] = useState<Time>({
@@ -8,9 +8,9 @@ function Stopwatch() {
     seconds: 0,
   });
   const [isRunning, setIsRunning] = useState<boolean>(false);
-  const [lapseTime, setLapseTime]= useState<Time[]>([])
+  const [lapseTime, setLapseTime] = useState<Time[]>([]);
 
-  const timerRef = useRef<number | null>(null); // Use `number` for browser environment
+  const timerRef = useRef<number | null>(null);
 
   useEffect(() => {
     if (isRunning) {
@@ -45,24 +45,22 @@ function Stopwatch() {
   };
 
   const stop = () => {
-    setIsRunning(false); // Stop the timer but do not reset time
-    // Time will stay as is when the stop button is pressed
+    setIsRunning(false);
   };
 
   const reset = () => {
-    setIsRunning(false); // Stop the timer first
-    setTime({ hour: 0, minutes: 0, seconds: 0 }); // Reset time
+    setIsRunning(false);
+    setTime({ hour: 0, minutes: 0, seconds: 0 });
     if (timerRef.current) {
       clearInterval(timerRef.current);
       timerRef.current = null;
     }
   };
 
-  const lapse = ()=>{
-   console.log(time)
-   setLapseTime([...lapseTime, time])
-
-  }
+  const lapse = () => {
+    console.log(time);
+    setLapseTime([...lapseTime, time]);
+  };
 
   const { hour, minutes, seconds } = time;
   const formattedHour = hour.toString().padStart(2, "0");
@@ -70,25 +68,23 @@ function Stopwatch() {
   const formattedSeconds = seconds.toString().padStart(2, "0");
 
   return (
-    <>
+    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh", width: "100vw", textAlign: "center", flexDirection: "column" }}>
       <div>Stopwatch</div>
       <h1>
         {formattedHour}:{formattedMinutes}:{formattedSeconds}
       </h1>
-      <h2>Laps time:{}</h2>
-      {lapseTime.map((item)=>(<div>hour:{item.hour} minute:{item.minutes}second:{item.seconds}</div>))}
+      <h2>Laps time:</h2>
+      {lapseTime.map((item, index) => (
+        <div key={index}>
+          hour: {item.hour} minute: {item.minutes} second: {item.seconds}
+        </div>
+      ))}
       <button onClick={start}>Start</button>
       <button onClick={stop}>Stop</button>
       <button onClick={reset}>Reset</button>
       <button onClick={lapse}>Lapse</button>
-
-    </>
+    </div>
   );
 }
 
 export default Stopwatch;
-
-//Time lapse
-//Capture time,record and display whilst timer is still running
-
-
