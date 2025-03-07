@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Time } from "../../types/stopWatchTypes/stopWatch.types"; // Ensure the path is correct
+import { Time } from "../../types/stopWatchTypes/stopWatch.tyes";
 
 function Stopwatch() {
   const [time, setTime] = useState<Time>({
@@ -8,6 +8,8 @@ function Stopwatch() {
     seconds: 0,
   });
   const [isRunning, setIsRunning] = useState<boolean>(false);
+  const [lapseTime, setLapseTime]= useState<Time[]>([])
+
   const timerRef = useRef<number | null>(null); // Use `number` for browser environment
 
   useEffect(() => {
@@ -56,6 +58,12 @@ function Stopwatch() {
     }
   };
 
+  const lapse = ()=>{
+   console.log(time)
+   setLapseTime([...lapseTime, time])
+
+  }
+
   const { hour, minutes, seconds } = time;
   const formattedHour = hour.toString().padStart(2, "0");
   const formattedMinutes = minutes.toString().padStart(2, "0");
@@ -67,11 +75,20 @@ function Stopwatch() {
       <h1>
         {formattedHour}:{formattedMinutes}:{formattedSeconds}
       </h1>
+      <h2>Laps time:{}</h2>
+      {lapseTime.map((item)=>(<div>hour:{item.hour} minute:{item.minutes}second:{item.seconds}</div>))}
       <button onClick={start}>Start</button>
       <button onClick={stop}>Stop</button>
       <button onClick={reset}>Reset</button>
+      <button onClick={lapse}>Lapse</button>
+
     </>
   );
 }
 
 export default Stopwatch;
+
+//Time lapse
+//Capture time,record and display whilst timer is still running
+
+
