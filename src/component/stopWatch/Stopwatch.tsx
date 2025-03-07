@@ -51,6 +51,7 @@ function Stopwatch() {
   const reset = () => {
     setIsRunning(false);
     setTime({ hour: 0, minutes: 0, seconds: 0 });
+    setLapseTime([]);
     if (timerRef.current) {
       clearInterval(timerRef.current);
       timerRef.current = null;
@@ -58,8 +59,11 @@ function Stopwatch() {
   };
 
   const lapse = () => {
-    console.log(time);
     setLapseTime([...lapseTime, time]);
+  };
+
+  const removeLapse = (index: number) => {
+    setLapseTime(lapseTime.filter((_, i) => i !== index));
   };
 
   const { hour, minutes, seconds } = time;
@@ -77,6 +81,7 @@ function Stopwatch() {
       {lapseTime.map((item, index) => (
         <div key={index}>
           hour: {item.hour} minute: {item.minutes} second: {item.seconds}
+          <button onClick={() => removeLapse(index)}>Remove</button>
         </div>
       ))}
       <button onClick={start}>Start</button>
